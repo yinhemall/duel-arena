@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DUEL ARENA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+
+<section id="screen-auth" class="screen active">
+  <div class="auth-card glass">
+    <div class="brand">
+      <span class="brand-mark">⬡</span>
+      <h1>DUEL ARENA</h1>
+      <p class="tagline">即時對決 · 贏家全拿</p>
+    </div>
+
+    <div class="tab-switch">
+      <button class="tab-btn active" data-tab="login">登入</button>
+      <button class="tab-btn" data-tab="register">註冊</button>
+    </div>
+
+    <form id="form-auth" autocomplete="off">
+      <div class="input-group">
+        <label>使用者名稱</label>
+        <input type="text" id="input-username" placeholder="至少 3 個字元" required minlength="3" maxlength="20">
+      </div>
+      <div class="input-group">
+        <label>密碼</label>
+        <input type="password" id="input-password" placeholder="至少 4 個字元" required minlength="4">
+      </div>
+      <p id="auth-error" class="error-text"></p>
+      <button type="submit" id="btn-auth-submit" class="btn-primary glow">
+        <span id="btn-auth-label">登入</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<section id="screen-lobby" class="screen">
+  <header class="lobby-header">
+    <div class="player-chip glass">
+      <div class="avatar">🧑‍🚀</div>
+      <div class="player-info">
+        <span id="lobby-username" class="player-name">Player</span>
+        <span class="player-balance">💰 餘額: $<span id="lobby-balance">1000</span></span>
+      </div>
+    </div>
+    <button id="btn-logout" class="icon-btn glass" title="登出">⏻</button>
+  </header>
+
+  <div class="bento-grid">
+    <button id="btn-play" class="bento-card bento-play glow">
+      <span class="bento-icon">⚔️</span>
+      <span class="bento-label">開始對決</span>
+      <span class="bento-sub">PLAY</span>
+    </button>
+    <div class="bento-card bento-stat glass">
+      <span class="bento-icon">🏆</span>
+      <span class="bento-label">戰績</span>
+      <span class="bento-sub"><span id="lobby-wins">0</span>勝 / <span id="lobby-losses">0</span>敗</span>
+    </div>
+    <div class="bento-card bento-stat glass">
+      <span class="bento-icon">💎</span>
+      <span class="bento-label">每局賭注</span>
+      <span class="bento-sub">$500</span>
+    </div>
+  </div>
+</section>
+
+<div id="modal-play" class="modal-overlay">
+  <div class="modal-card glass">
+    <h2>開始對決</h2>
+    <button id="btn-create-room" class="btn-primary glow">🏠 創建房間</button>
+    <div class="divider"><span>或</span></div>
+    <div class="input-group">
+      <label>輸入房間號碼</label>
+      <input type="text" id="input-room-code" placeholder="例如 8892" maxlength="4" inputmode="numeric">
+    </div>
+    <button id="btn-join-room" class="btn-secondary glow">🔑 加入房間</button>
+    <p id="play-error" class="error-text"></p>
+    <p id="room-waiting" class="waiting-text"></p>
+    <button id="btn-close-modal" class="btn-text">取消</button>
+  </div>
+</div>
+
+<section id="screen-battle" class="screen">
+  <div class="hud">
+    <div class="hp-block hp-left">
+      <span class="hp-name" id="hp-name-p1">你</span>
+      <div class="hp-bar-track"><div class="hp-bar-fill" id="hp-fill-p1"></div></div>
+      <span class="hp-pct" id="hp-pct-p1">100%</span>
+    </div>
+    <div class="timer-block glass" id="timer-display">90s</div>
+    <div class="hp-block hp-right">
+      <span class="hp-name" id="hp-name-p2">對手</span>
+      <div class="hp-bar-track"><div class="hp-bar-fill hp-fill-red" id="hp-fill-p2"></div></div>
+      <span class="hp-pct" id="hp-pct-p2">100%</span>
+    </div>
+  </div>
+
+  <div class="arena" id="arena">
+    <div class="arena-floor"></div>
+    <div class="fighter fighter-blue" id="fighter-p1"></div>
+    <div class="fighter fighter-red" id="fighter-p2"></div>
+  </div>
+
+  <div class="room-code-badge glass" id="battle-room-code"></div>
+
+  <div class="joystick-zone" id="joystick-zone">
+    <div class="joystick-outer" id="joystick-outer">
+      <div class="joystick-thumb" id="joystick-thumb"></div>
+    </div>
+  </div>
+
+  <div class="action-zone">
+    <button class="action-btn action-jump" id="btn-jump">⇪</button>
+    <button class="action-btn action-dash" id="btn-dash">⚡</button>
+    <button class="action-btn action-attack" id="btn-attack">⚔️</button>
+  </div>
+</section>
+
+<div id="screen-gameover" class="modal-overlay">
+  <div class="gameover-card glass">
+    <h1 id="gameover-title">🎉 YOU WIN</h1>
+    <p class="gameover-wallet">
+      錢包：$<span id="gameover-before">1000</span>
+      <span class="arrow">➜</span>
+      $<span id="gameover-after">1500</span>
+      <span id="gameover-delta" class="delta-positive">(+500)</span>
+    </p>
+    <div class="gameover-actions">
+      <button id="btn-rematch" class="btn-primary glow">🔄 再戰一局</button>
+      <button id="btn-main-menu" class="btn-secondary glow">🏠 回到主頁</button>
+    </div>
+    <p id="rematch-status" class="waiting-text"></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
