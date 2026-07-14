@@ -14,6 +14,7 @@ function attachRipple(el) {
 document.querySelectorAll('.btn-primary, .btn-secondary').forEach(attachRipple);
 
 document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('touchend', (e) => { e.preventDefault(); btn.click(); }, { passive: false });
   btn.addEventListener('click', () => {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
